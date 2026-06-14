@@ -20,13 +20,12 @@ public:
         //max_val tracks the maximum value in the path
         if(!node) return 0;
 
-        int good_nodes = node->val >= max_val ? 1 : 0; //check if the current path is max or not
+        int good_nodes = node->val >= max_val ? 1 : 0; //check if the current node is good or not
         max_val = max(max_val, node->val);
         good_nodes += dfs(node->left,max_val);
         good_nodes += dfs(node->right,max_val);
 
         return good_nodes;
     }
-
 
 };
