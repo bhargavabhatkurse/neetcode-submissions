@@ -23,11 +23,11 @@ public:
         
         if(del_index == 0) return head->next;
         
-        ptr = head; //start from the first node (index = 1)
+        ptr = head; //start from the first node (index = 0)
         int pos = 0;
         
         while(ptr) {
-            if(pos == del_index - 1) {
+            if(pos == del_index - 1) { //next node is to be deleted
                 ptr->next = ptr->next->next;
             }
 
