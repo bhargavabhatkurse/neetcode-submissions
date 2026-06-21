@@ -35,9 +35,9 @@ public:
     water += min(left_greater[i], right_greater[i]) - height[i];
     }
 
+    //we are including the index i because the water formula is based on the tallest wall available on each side, and the current bar itself is always a valid candidate
         return water;
-
-        //we are including the index i because the water formula is based on the tallest wall available on each side, and the current bar itself is always a valid candidate
+       
     }
 
 
