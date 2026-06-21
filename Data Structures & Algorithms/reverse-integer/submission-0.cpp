@@ -1,6 +1,8 @@
 class Solution {
 public:
     int reverse(int x) {
+       //this is o(1) as int max has 10 digit max and reversing is o(digit) => 0(10) which is 0(1)
+       //remember this is only because INT, not for millions of digits
        long rev = 0;
        int n = abs(x);
 
