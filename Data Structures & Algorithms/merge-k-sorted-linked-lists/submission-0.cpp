@@ -10,22 +10,27 @@
  */
 
 class Solution {
+
+    //This soln is not recommended - Just see the remember the syntax
+
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         //bruteforce - collect all elements, sort and then rebuild the list
+       
+       // o(n*k) solution - collect min from each list and add it to result
         vector<int> sorted; //collects the entire sorted array 
         vector<pair<int,int>> min_array; //it will hold k elements and their list index
         int n = lists.size();
         while(true) {
         vector<bool> valid_index(n,1);
         int count = n;
-        for(int i = 0; i < lists.size(); i++) {
+        for(int i = 0; i < lists.size(); i++) { //this loops checks which indices are valid
             if(lists[i] == nullptr) {
             valid_index[i] = 0;
             count--;
             }
         }
-        if(count == 0) break;
+        if(count == 0) break; //if none are valid
         
         for(int i = 0; i < lists.size(); i++) { //k - list array
             if(!valid_index[i]) continue; 
@@ -38,6 +43,7 @@ public:
         lists[min_el.second] = lists[min_el.second]->next;
         }
 
+        //build the list
         ListNode* res = new ListNode(0);
         ListNode* curr = res;
         for(int node: sorted) {
@@ -46,16 +52,6 @@ public:
         }
 
         return res->next;
-
-
-
-
-
-
-
-
-
-
-        
+  
     }
 };
