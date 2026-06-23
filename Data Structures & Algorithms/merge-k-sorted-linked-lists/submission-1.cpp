@@ -9,50 +9,69 @@
  * };
  */
 
+
 class Solution {
 
-    //This soln is not recommended - Just see the remember the syntax
-
 public:
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
-        //bruteforce - collect all elements, sort and then rebuild the list
+     ListNode* mergeKLists(vector<ListNode*>& lists) {
+       //USING array: O(nk) 
        
-       // o(n*k) solution - collect min from each list and add it to result
-        vector<int> sorted; //collects the entire sorted array 
-        vector<pair<int,int>> min_array; //it will hold k elements and their list index
-        int n = lists.size();
-        while(true) {
-        vector<bool> valid_index(n,1);
-        int count = n;
-        for(int i = 0; i < lists.size(); i++) { //this loops checks which indices are valid
-            if(lists[i] == nullptr) {
-            valid_index[i] = 0;
-            count--;
-            }
-        }
-        if(count == 0) break; //if none are valid
+       //remember the cmp flips here
+       auto cmp = [](ListNode* a, ListNode* b) {
+         return a->val < b->val;
+       };
+
+      vector<ListNode*> min_array;
+
+       for(int i = 0; i < lists.size();i++) {
+        if(lists[i] != nullptr) min_array.push_back(lists[i]);
+       } 
+       
+       ListNode* res = new ListNode(0);
+       ListNode* curr = res;
+
+       while(!min_array.empty()) {
+          auto node = *min_element(min_array.begin(),min_array.end(),cmp);
+          curr->next = new ListNode(node->val);
+          curr=curr->next;
+          erase(min_array, node); //delete the element to maintain size of array as k
+          node = node->next;
+         if(node) {
+             min_array.push_back(node);
+         }
+       }
+       return res->next;
         
-        for(int i = 0; i < lists.size(); i++) { //k - list array
-            if(!valid_index[i]) continue; 
-            min_array.push_back({lists[i]->val,i});
-        }
-
-        pair<int,int> min_el = *min_element(min_array.begin(),min_array.end());
-        sorted.push_back(min_el.first);
-        erase(min_array,min_el); //to maintain the list of k elements
-        lists[min_el.second] = lists[min_el.second]->next;
-        }
-
-        //build the list
-        ListNode* res = new ListNode(0);
-        ListNode* curr = res;
-        for(int node: sorted) {
-            curr->next = new ListNode(node);
-            curr = curr->next;
-        }
-
-        return res->next;
-  
     }
-    
+
+
+   ListNode* mergeKLists_heap(vector<ListNode*>& lists) {
+       //USING HEAP: O(nlogk) 
+
+       auto cmp = [](ListNode* a, ListNode* b) {
+         return a->val > b->val;
+       };
+
+       priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> pq(cmp); // remember to pass cmp in the argument as well as constr expects it
+
+       for(int i = 0; i < lists.size();i++) {
+        if(lists[i] != nullptr) pq.push(lists[i]);
+       } 
+       
+       ListNode* res = new ListNode(0);
+       ListNode* curr = res;
+
+       while(!pq.empty()) {
+        auto node = pq.top(); //minimum
+         curr->next = new ListNode(node->val);
+         curr=curr->next;
+        pq.pop();
+        node = node->next;
+         if(node) {
+            pq.push(node);
+         }
+       }
+       return res->next;
+        
+    }
 };
