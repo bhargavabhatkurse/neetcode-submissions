@@ -9,8 +9,6 @@
  * };
  */
 
-
-
 class Solution {
 public:
     void reorderList(ListNode* head) {
@@ -31,7 +29,8 @@ public:
             
            arr[left]->next = arr[right];
            left++;
-
+        
+            if(left==right) break;
            
 
            arr[right]->next = arr[left]; //right should point to the next left
@@ -40,9 +39,4 @@ public:
 
         arr[left]->next = nullptr; //important: end the list manually
     }
-
-
-   
-
-
 };
