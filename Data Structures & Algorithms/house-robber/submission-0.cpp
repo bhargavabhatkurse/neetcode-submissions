@@ -1,6 +1,21 @@
 class Solution {
 public:
-    int rob(vector<int>& nums) {
+vector<int> dp;
+//int maximum; if using this, make sure to intialise it to be value before taking max()
+    int rec(vector<int>& nums, int i) {
+        if(i >= nums.size()) return 0;
+        if(dp[i] != -1) return dp[i];
+        int money = max(rec(nums,i+1),nums[i]+rec(nums,i+2));
+        return dp[i] = money;
+    }
+    int rob(vector<int>& nums) {  
+        dp.assign(nums.size(),-1);  
+        return rec(nums,0);
+        
+    }
+
+
+    int rob1(vector<int>& nums) {
         if(nums.empty()) return 0;
         if(nums.size() == 1) return nums[0];
         
@@ -16,4 +31,6 @@ public:
 
         return dp[nums.size()-1];
     }
+
+   
 };
