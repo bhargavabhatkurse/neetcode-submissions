@@ -13,7 +13,8 @@
 class Solution {
 public:
     int goodNodes(TreeNode* root) {
-        return dfs(root,root->val); //current max_val is root val
+        //return dfs(root,root->val); //current max_val is root val
+        return bfs(root);
     }
 
     int dfs(TreeNode* node, int max_val) {
@@ -28,5 +29,23 @@ public:
         return good_nodes;
     }
 
+     int bfs(TreeNode* root) {
+        int count = 0;
+        queue<pair<TreeNode*,int>> q;
+        if(root == nullptr) return 0;
+        q.push({root, root->val});
+
+        while(!q.empty()) {
+        auto [node,max_val] = q.front();
+        q.pop();
+        if(node == nullptr) continue; //we need to do this because we are pushing nullptr as children 
+        if(node->val >= max_val) count++;
+        max_val = max(max_val, node->val);
+        q.push({node->left,max_val});
+        q.push({node->right,max_val});
+        }
+
+        return count;
+     }
 
 };
