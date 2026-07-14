@@ -1,7 +1,6 @@
 class Solution {
 public:
     bool rec(vector<int>& nums,int i, int sum) {
-        
         if(sum == 0) return true;
 
         if( i == nums.size()) return false;
@@ -23,6 +22,7 @@ public:
 
         // return curr;
     }
+
     vector<vector<int>> dp; 
     bool rec_topdown(vector<int>& nums,int i, int sum) {
         if(sum == 0) return true;
@@ -50,8 +50,10 @@ public:
         dp.assign(nums.size(),vector<int>(sum/2 + 1,-1));
         return rec_topdown(nums,0,sum/2);
     }
- vector<vector<bool>> Dp; 
-     bool canPartition(vector<int>& nums) {
+     
+     
+     vector<vector<bool>> Dp; 
+     bool canPartition_forward(vector<int>& nums) {
         int sum = 0;
         for (int num : nums) {
             sum += num;
@@ -77,4 +79,35 @@ public:
 
      return Dp[0][target];
      }
+
+     bool canPartition(vector<int>& nums) {
+        //SPACE OPTIMISED
+
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % 2 != 0) {
+            return false;
+        }
+
+        int target = sum / 2;
+        int n = nums.size();
+
+        vector<int> dpnext(target + 1, false), dp(target + 1, false);
+    
+        dpnext[0] = true;
+
+        //forward dp
+        for(int i = n-1; i >= 0; i--) { 
+        for(int j = target; j >= 0; j--) {
+        dp[j] = dpnext[j];
+        if(nums[i] <= j)
+        dp[j] = dp[j] || dpnext[j-nums[i]];
+        }
+     dpnext = dp;
+    }
+     return dp[target];
+     }
+
 };
