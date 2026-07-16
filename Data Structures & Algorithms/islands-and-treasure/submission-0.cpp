@@ -7,12 +7,13 @@ class Solution {
 
 public:
     void islandsAndTreasure(vector<vector<int>>& grid) {
+        //o(m*n * (m*n)) = o(m*n)^2    (bfs complexity in a grid is R*C (r*c vertices))
         row = grid.size();
         col = grid[0].size();
 
         for (int r = 0; r < row; r++) {
             for (int c = 0; c < col; c++) {
-                if (grid[r][c] == INF) {
+                if (grid[r][c] == INF) { //for each land cell
                     grid[r][c] = bfs(grid, r, c);
                 }
             }
@@ -34,14 +35,16 @@ public:
                 auto [r, c] = q.front();
                 q.pop();
                 
+                //visit[r][c] = true; //better to make it visited while entering
+                
                 if (grid[r][c] == 0) return steps;
                 
                 for (auto& dir : directions) {
                     int nr = r + dir[0], nc = c + dir[1];
                     if (nr >= 0 && nr < row && nc >= 0 && nc < col &&
-                        !visit[nr][nc] && grid[nr][nc] != -1) {
+                        !visit[nr][nc] && grid[nr][nc] != -1) { //check bounds first and then the visit array and grid
                         
-                        visit[nr][nc] = true;
+                        visit[nr][nc] = true; //making visited here is optimal
                         q.push({nr, nc});
 
                     }
@@ -53,5 +56,17 @@ public:
 
         return INF;
     }
+// Input: [
+//   [2147483647,-1,0,2147483647],
+//   [2147483647,2147483647,2147483647,-1],
+//   [2147483647,-1,2147483647,-1],
+//   [0,-1,2147483647,2147483647]
+// ]
 
+// Output: [
+//   [3,-1,0,1],
+//   [2,2,1,-1],
+//   [1,-1,2,-1],
+//   [0,-1,3,4]
+// ]
 };
