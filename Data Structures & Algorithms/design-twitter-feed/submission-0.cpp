@@ -33,7 +33,7 @@ public:
     }
     
     void follow(int followerId, int followeeId) {
-         if (followerId == followeeId) return; 
+         if (followerId == followeeId) return; //ignore self follow to avoid adding your tweets twice 
         followMap[followerId].insert(followeeId);
     }
     
